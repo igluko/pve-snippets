@@ -27,7 +27,7 @@ if ($phase eq 'pre-start') {
     # ist started. Exiting with a code != 0 will abort the start
 
     print "$vmid is starting, doing preparations.\n";
-    my $mac = `cat /root/Sync/mac/$vmid | grep \$(hostname) | cut -d "," -f 3 | tr -d '\n'`;
+    my $mac = `cat /root/Sync/mac/$vmid | grep \$(hostname) | cut -d "," -f 2 | tr -d '\n'`;
     #my $mac = 'DA:E6:D3:96:5D:71';
     #print $mac;
 
