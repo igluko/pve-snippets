@@ -27,14 +27,20 @@ if ($phase eq 'pre-start') {
     # ist started. Exiting with a code != 0 will abort the start
 
     print "$vmid is starting, doing preparations.\n";
-    my $mac = `cat /root/Sync/mac/$vmid | grep \$(hostname) | cut -d "," -f 2 | tr -d '\n'`;
-    #my $mac = 'DA:E6:D3:96:5D:71';
-    #print $mac;
+    my $mac_up = `cat /root/Sync/mac/$vmid | grep \$(hostname) | cut -d "," -f 2 | tr -d '\n'`;
+    my $mac_down = `cat /root/Sync/mac/$vmid | grep -v \$(hostname) | cut -d "," -f 2 | tr -d '\n'`;
+    print "$mac_up\n";
+    print "$mac_down\n";
 
-    # not working - qm locking config
-    #`qm set 950 --net0 virtio=DA:E6:D3:96:5D:71,bridge=vmbr0,firewall=1,tag=4050`
-
-    `sed -i -r "s/(net0: virtio=)..:..:..:..:..:../\\1$mac/" /etc/pve/local/qemu-server/$vmid.conf`;
+    # change config with API not working - config lock
+    # mac up
+    #sed -i -r "s/(net.: virtio=)(..:..:..:..:..:..)(.*)(,link_down=1)/\1\2\3/" 950.conf
+    `sed -i -r "s/(net.: virtio=)($mac_up)(.*)(,link_down=1)/\\1\\2\\3/" /etc/pve/local/qemu-server/$vmid.conf`;
+    
+    # mac down
+    #sed -i -r "/,link_down=1/! s/(net.: virtio=)(..:..:..:..:..:..)(.*)/\1\2\3,link_down=1/" 950.conf    
+    `sed -i -r "/,link_down=1/! s/(net.: virtio=)($mac_down)(.*)/\\1\\2\\3,link_down=1/" /etc/pve/local/qemu-server/$vmid.conf`;        
+    
     # print "preparations failed, aborting."
     # exit(1);
 
