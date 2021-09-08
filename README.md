@@ -1,8 +1,16 @@
 # pve-snippets
-
-Add hook snippet to VM:
+Add storage "sync" for store snippets:
 ```
-qm set <vmid> --hookscript sync:snippets/change_mac.pl
+pvesm add dir sync --path /root/Sync --content snippets
+```
+
+Copy snippet template to storage
+```
+cp /usr/share/pve-docs/examples/guest-example-hookscript.pl /root/Sync/snippets/
+```
+Add example snippet to VM:
+```
+qm set <vmid> --hookscript sync:snippets/guest-example-hookscript.pl
 ```
 ## change_mac
 This hook script change MAC before VM started. This is necessary during the failover.
