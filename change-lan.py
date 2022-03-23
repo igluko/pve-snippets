@@ -7,22 +7,19 @@ phase = sys.argv[2]
 hostname = os.uname()[1]
 conf_file = sys.path[0]+'/'+'change-lan.conf'
 
-if hostname.startswith("pv"):
-    print('State: ' + phase + ". Prod - exit.")
-    sys.exit()
-
 def get_conf(file):
     if os.path.isfile(file):
         with open(file,'r') as conf_file:
             try:
                 data = json.load(conf_file)
             except json.decoder.JSONDecodeError:
-                sys.exit('Not valid json in file ' + file)
+                print('Not valid json in file ' + file)
+                sys.exit()
         conf_file.close()
         return(data['conf'])
     else:
-        sys.exit('Conf file ' + file + ' not found')
-
+        print('Conf file ' + file + ' not found')
+        sys.exit()
 
 def find_conf(configs, vmid, hostname):
     result = []
@@ -30,7 +27,8 @@ def find_conf(configs, vmid, hostname):
         if (config['Hostname'] == hostname) and (str(config['VMID']) == vmid):
             result = config
     if len(result) == 0:
-        sys.exit('Not found config for ' + hostname + ':' + vmid)
+       print('Not found config for ' + hostname + ':' + vmid)
+       sys.exit()
     return(result)
             
 def check_mac(new_conf, vmid, hostname):
