@@ -5,7 +5,7 @@ import sys, os, json
 vmid = sys.argv[1]
 phase = sys.argv[2]
 hostname = os.uname()[1]
-conf_file = sys.path[0]+'/'+'change-lan.conf'
+conf_file = sys.path[0]+'/'+'change_lan.conf'
 
 def get_conf(file):
     if os.path.isfile(file):
