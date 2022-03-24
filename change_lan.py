@@ -64,5 +64,5 @@ if phase == 'pre-start':
                 sys.exit('The command completed with an error: ' + status)
         print('Snippet work done')
     except BaseException:
-        print('except Exception')
+        print('Break snippet.')
         sys.exit()
