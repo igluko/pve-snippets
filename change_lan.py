@@ -51,14 +51,18 @@ def get_bash_conf(new_conf):
     return(res_conf)
 
 if phase == 'pre-start':
-    print('Snippet started: pre-start')
-    configs = get_conf(conf_file)
-    new_conf = find_conf(configs, vmid, hostname)
-    check_mac(new_conf, vmid, hostname)
-    cmd_list = get_bash_conf(new_conf)
-    for cmd in cmd_list:
-        print('Command to execute: ' + cmd)
-        status = os.system(cmd)
-        if status != 0:
-            sys.exit('The command completed with an error: ' + status)
-    print('Snippet work done')
+    try:
+        print('Snippet started: pre-start')
+        configs = get_conf(conf_file)
+        new_conf = find_conf(configs, vmid, hostname)
+        check_mac(new_conf, vmid, hostname)
+        cmd_list = get_bash_conf(new_conf)
+        for cmd in cmd_list:
+            print('Command to execute: ' + cmd)
+            status = os.system(cmd)
+            if status != 0:
+                sys.exit('The command completed with an error: ' + status)
+        print('Snippet work done')
+    except BaseException:
+        print('except Exception')
+        sys.exit()
